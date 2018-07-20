@@ -27,6 +27,6 @@ public class ResponseWriter {
 			throws JsonProcessingException, IOException {
 		response.setStatus(httpStatus.value());
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().print(objectMapper.writeValueAsString(TextResponseDto.with(message)));
+		response.getWriter().print(objectMapper.writeValueAsString(new TextResponseDto(message)));
 	}
 }

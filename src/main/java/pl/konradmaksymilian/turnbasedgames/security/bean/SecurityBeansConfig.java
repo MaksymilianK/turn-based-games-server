@@ -18,7 +18,7 @@ public class SecurityBeansConfig {
 	
 	@Bean
 	public DaoAuthenticationProvider daoAuthenticationProvider() {
-		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+		var daoAuthenticationProvider = new DaoAuthenticationProvider();
 		daoAuthenticationProvider.setUserDetailsService(userDetailsService);
 		daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
 		return daoAuthenticationProvider;
@@ -31,10 +31,10 @@ public class SecurityBeansConfig {
 	
 	@Bean
 	public RoleHierarchy roleHierarchy() {
-		RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-		roleHierarchy.setHierarchy("ROLE_HEAD_ADMINISTRATOR > ROLE_ADMINISTRATOR and "
-				+ "ROLE_ADMINISTRATOR > ROLE_MODERATOR and ROLE_MODERATOR > ROLE_HELPER and "
-				+ "ROLE_HELPER > ROLE_PLAYER and ROLE_PLAYER > ROLE_GUEST");
+		var roleHierarchy = new RoleHierarchyImpl();
+		roleHierarchy.setHierarchy(
+				"ROLE_HEAD_ADMINISTRATOR > ROLE_ADMINISTRATOR and ROLE_ADMINISTRATOR > ROLE_MODERATOR"
+				+ " and ROLE_MODERATOR > ROLE_HELPER and ROLE_HELPER > ROLE_PLAYER and ROLE_PLAYER > ROLE_GUEST");
 		return roleHierarchy;
 	}
 }

@@ -40,15 +40,14 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.0.3.RELEASE'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: '2.0.3.RELEASE'
     implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '2.6.2'
+    implementation group: 'com.h2database', name: 'h2', version: '1.4.197'
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
-    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.11'
-
+    
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.3.RELEASE'
+    testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.0.6.RELEASE'
 	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.2.0'
 	testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.2.0'
-
-	intTestImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.0.6.RELEASE'
-	intTestImplementation group: 'com.h2database', name: 'h2', version: '1.4.197'
+	
 }
 
 repositories {
@@ -56,5 +55,9 @@ repositories {
 }
 
 test {
+	useJUnitPlatform()
+}
+
+integrationTest {
 	useJUnitPlatform()
 }

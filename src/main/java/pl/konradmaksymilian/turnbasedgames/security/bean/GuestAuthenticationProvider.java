@@ -1,5 +1,7 @@
 package pl.konradmaksymilian.turnbasedgames.security.bean;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,11 +14,14 @@ import pl.konradmaksymilian.turnbasedgames.player.entity.Player;
 @Component
 public class GuestAuthenticationProvider implements AuthenticationProvider {
 
+	private static volatile AtomicInteger guestCounter = new AtomicInteger(0);
+	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		String nick = (String) authentication.getName();
+		var nick = (String) authentication.getName();
 		if (nick.isEmpty()) {
-			return new UsernamePasswordAuthenticationToken(new Player("guest", "", "", Role.GUEST), "");
+			return new UsernamePasswordAuthenticationToken(new Player("guest" + guestCounter.getAndIncrement(), "", "",
+					Role.GUEST), "");
 		} else {
 			return null;
 		}

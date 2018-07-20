@@ -16,7 +16,7 @@ import pl.konradmaksymilian.turnbasedgames.player.Role;
 
 @Entity
 public class Player extends BaseEntity implements UserDetails {
-	
+
 	@Column(unique = true)
 	private String nick;
 	
@@ -39,7 +39,6 @@ public class Player extends BaseEntity implements UserDetails {
 		this.email = email;
 		this.password = password;
 		this.role = role;
-		setAuthorities();
 	}
 
 	public String getNick() {
@@ -72,11 +71,13 @@ public class Player extends BaseEntity implements UserDetails {
 
 	public void setRole(Role role) {
 		this.role = role;
-		setAuthorities();
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+		if (authorities == null) {
+			setAuthorities();
+		}
 		return authorities;
 	}
 
