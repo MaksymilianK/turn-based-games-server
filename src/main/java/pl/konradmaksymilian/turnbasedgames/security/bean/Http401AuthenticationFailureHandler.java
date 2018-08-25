@@ -23,6 +23,6 @@ public class Http401AuthenticationFailureHandler implements AuthenticationFailur
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
-		responseWriter.write(response, HttpStatus.UNAUTHORIZED, exception.getMessage());
+		responseWriter.write(response, HttpStatus.UNAUTHORIZED, "Authentication failure!");
 	}
 }

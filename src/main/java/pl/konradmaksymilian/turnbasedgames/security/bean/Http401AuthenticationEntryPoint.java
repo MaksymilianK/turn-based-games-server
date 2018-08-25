@@ -23,6 +23,6 @@ public class Http401AuthenticationEntryPoint implements AuthenticationEntryPoint
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
-		responseWriter.write(response, HttpStatus.UNAUTHORIZED, exception.getMessage());
+		responseWriter.write(response, HttpStatus.UNAUTHORIZED, "The current user is not authenticated!");
 	}
 }

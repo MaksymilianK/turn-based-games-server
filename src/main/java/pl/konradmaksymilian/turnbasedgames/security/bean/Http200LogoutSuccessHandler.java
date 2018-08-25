@@ -23,7 +23,6 @@ public class Http200LogoutSuccessHandler implements LogoutSuccessHandler {
 	@Override
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
 			throws IOException, ServletException {
-		responseWriter.write(response, HttpStatus.OK, "Player has successfully logged out!");
+		responseWriter.write(response, HttpStatus.OK, "User has been successfully logged out!");
 	}
-
 }

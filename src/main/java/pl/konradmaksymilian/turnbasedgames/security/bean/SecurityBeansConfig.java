@@ -1,14 +1,22 @@
 package pl.konradmaksymilian.turnbasedgames.security.bean;
 
+import javax.servlet.http.HttpSessionListener;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.authentication.AuthenticationEventPublisher;
+import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Configuration
 public class SecurityBeansConfig {
@@ -22,6 +30,21 @@ public class SecurityBeansConfig {
 		daoAuthenticationProvider.setUserDetailsService(userDetailsService);
 		daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
 		return daoAuthenticationProvider;
+	}
+	
+	@Bean
+	public AuthenticationEventPublisher defaultAuthenticationEventPublisher() {
+		return new DefaultAuthenticationEventPublisher();
+	}
+	
+	@Bean
+	public ServletListenerRegistrationBean<HttpSessionListener> httpSessionEventPublisher() {
+	    return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
+	}
+	
+	@Bean
+	public SessionRegistry sessionRegistry() {
+	    return new SessionRegistryImpl();
 	}
 	
 	@Bean

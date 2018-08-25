@@ -48,7 +48,8 @@ public class ExceptionHandlerController {
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<TextResponseDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+	public ResponseEntity<TextResponseDto> handleMethodArgumentNotValidException(
+			MethodArgumentNotValidException exception) {
 		var description = new StringBuilder();
 		for (ObjectError error : exception.getBindingResult().getAllErrors()) {
 			if (error instanceof FieldError) {
@@ -69,31 +70,15 @@ public class ExceptionHandlerController {
 		return createResponse(HttpStatus.FORBIDDEN, exception.getMessage());
 	}
 	
-	@ExceptionHandler(AuthenticationException.class)
-	public ResponseEntity<TextResponseDto> handleAuthenticationException(AuthenticationException exception) {
-		return createResponse(HttpStatus.UNAUTHORIZED, "The current player is not authenticated!");
-	}
-	
 	@ExceptionHandler(Exception.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ResponseEntity<TextResponseDto> handleAnotherException(Exception exception) {
-		logExceptionStackTrace(exception);
-				
-		return createResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error! Please contant administration");
+		logger.error("An unexpected exception occured", exception);
+		return createResponse(HttpStatus.FORBIDDEN, "An unexpected exception occured");
 	}
 	
 	private ResponseEntity<TextResponseDto> createResponse(HttpStatus status, String message) {
 		return ResponseEntity.status(status)
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 				.body(new TextResponseDto(message));
-	}
-	
-	private void logExceptionStackTrace(Exception exception) {
-		var stringWriter = new StringWriter(); 
-		try (var printWriter = new PrintWriter(stringWriter)) {
-			exception.printStackTrace(printWriter);
-			
-			logger.error("Unexpected exception occured: {}", stringWriter.toString());
-		}
 	}
 }

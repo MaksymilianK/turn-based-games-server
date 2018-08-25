@@ -23,6 +23,6 @@ public class Http200AuthenticationSuccessHandler implements AuthenticationSucces
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
-		responseWriter.write(response, HttpStatus.OK, "Player has successfully logged in!");
+		responseWriter.write(response, HttpStatus.OK, "User has successfully logged in!");
 	}
 }

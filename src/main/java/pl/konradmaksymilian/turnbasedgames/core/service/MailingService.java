@@ -49,7 +49,7 @@ public class MailingService {
 	}
 	
 	private void sendMessage(SimpleMailMessage message) {
-		//todo
+		//not implemented yet
 		return;
 	}
 }
