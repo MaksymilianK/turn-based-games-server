@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.konradmaksymilian.turnbasedgames.user.service.UserService;
 
 @RestController
-@RequestMapping(path = "/security-tokens")
+@RequestMapping("/security-tokens")
 @Validated
 public class SecurityTokenController {
 

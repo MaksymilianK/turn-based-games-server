@@ -19,8 +19,7 @@ public class UserTestUtils {
 	}
 	
 	public static User mockGuest() {
-		var user = new User("guest", "", "", Role.GUEST);
-		return user;
+		return mockGuest(-235);
 	}
 	
 	public static User mockGuest(int id) {

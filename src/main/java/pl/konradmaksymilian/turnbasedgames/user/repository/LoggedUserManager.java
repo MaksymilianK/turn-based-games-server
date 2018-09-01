@@ -40,7 +40,7 @@ public class LoggedUserManager {
 		} else {
 			if (user.getRole().equals(Role.GUEST)) {
 				user.setId(generateGuestId());
-				user.setNick(user.getNick() + -user.getId());
+				user.setNick("guest" + (-user.getId()));
 			}
 			loggedUsers.put(user.getId(), user);
 		}
