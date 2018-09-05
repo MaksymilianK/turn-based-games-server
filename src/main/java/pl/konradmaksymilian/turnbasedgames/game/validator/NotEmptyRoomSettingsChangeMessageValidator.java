@@ -3,7 +3,7 @@ package pl.konradmaksymilian.turnbasedgames.game.validator;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import pl.konradmaksymilian.turnbasedgames.game.room.dto.message.RoomSettingsChangeMessage;
+import pl.konradmaksymilian.turnbasedgames.gameroom.dto.message.RoomSettingsChangeMessage;
 
 public class NotEmptyRoomSettingsChangeMessageValidator 
 		implements ConstraintValidator<NotEmptyRoomSettingsChangeMessage, RoomSettingsChangeMessage> {

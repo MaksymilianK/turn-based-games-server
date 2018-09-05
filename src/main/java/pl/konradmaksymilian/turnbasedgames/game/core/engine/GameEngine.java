@@ -3,7 +3,7 @@ package pl.konradmaksymilian.turnbasedgames.game.core.engine;
 import java.util.Set;
 
 import pl.konradmaksymilian.turnbasedgames.game.Game;
-import pl.konradmaksymilian.turnbasedgames.game.core.dto.command.GameCommand;
+import pl.konradmaksymilian.turnbasedgames.game.core.action.command.GameCommand;
 
 public interface GameEngine {
 
@@ -14,6 +14,6 @@ public interface GameEngine {
 	int countPlayers();
 	boolean containsPlayer(int userId);
 	void removePlayer(int userId);
-	Set<Integer> getPlayersIds();
+	Set<Integer> getPlayersUsersIds();
 	void processCommand(GameCommand command);
 }

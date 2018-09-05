@@ -12,8 +12,12 @@ import pl.konradmaksymilian.turnbasedgames.game.Game;
 import pl.konradmaksymilian.turnbasedgames.game.GameEngineTestUtils;
 import pl.konradmaksymilian.turnbasedgames.game.core.dto.GameResponseDto;
 import pl.konradmaksymilian.turnbasedgames.game.core.engine.GameStatus;
-import pl.konradmaksymilian.turnbasedgames.game.room.dto.GameRoomDetailsResponseDto;
-import pl.konradmaksymilian.turnbasedgames.game.room.dto.GameRoomResponseDto;
+import pl.konradmaksymilian.turnbasedgames.gameroom.ChatPolicy;
+import pl.konradmaksymilian.turnbasedgames.gameroom.GameRoom;
+import pl.konradmaksymilian.turnbasedgames.gameroom.Invitation;
+import pl.konradmaksymilian.turnbasedgames.gameroom.RoomPrivacy;
+import pl.konradmaksymilian.turnbasedgames.gameroom.dto.GameRoomDetailsResponseDto;
+import pl.konradmaksymilian.turnbasedgames.gameroom.dto.GameRoomResponseDto;
 import pl.konradmaksymilian.turnbasedgames.user.UserTestUtils;
 import pl.konradmaksymilian.turnbasedgames.user.entity.User;
 

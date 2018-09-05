@@ -47,7 +47,7 @@ public class GameEngineTestUtils {
 		
 		public GameEngine build() {
 			var engine = Mockito.mock(GameEngine.class);
-			when(engine.getPlayersIds()).thenReturn(playersIds);
+			when(engine.getPlayersUsersIds()).thenReturn(playersIds);
 			when(engine.getGame()).thenReturn(game);
 			when(engine.getMaxPlayers()).thenReturn(maxPlayers);
 			when(engine.getStatus()).thenReturn(gameStatus);

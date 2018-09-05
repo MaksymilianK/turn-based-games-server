@@ -15,10 +15,11 @@ import org.springframework.data.domain.Sort;
 
 import pl.konradmaksymilian.turnbasedgames.game.Game;
 import pl.konradmaksymilian.turnbasedgames.game.core.engine.GameStatus;
-import pl.konradmaksymilian.turnbasedgames.game.room.GameRoom;
-import pl.konradmaksymilian.turnbasedgames.game.room.Invitation;
-import pl.konradmaksymilian.turnbasedgames.game.room.RoomPrivacy;
 import pl.konradmaksymilian.turnbasedgames.game.room.RoomTestUtils;
+import pl.konradmaksymilian.turnbasedgames.gameroom.GameRoom;
+import pl.konradmaksymilian.turnbasedgames.gameroom.Invitation;
+import pl.konradmaksymilian.turnbasedgames.gameroom.RoomPrivacy;
+import pl.konradmaksymilian.turnbasedgames.gameroom.repository.GameRoomManager;
 import pl.konradmaksymilian.turnbasedgames.user.UserTestUtils;
 
 public class GameRoomManagerTest {
