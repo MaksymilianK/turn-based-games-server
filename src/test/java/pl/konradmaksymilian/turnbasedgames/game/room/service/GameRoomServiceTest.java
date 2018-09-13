@@ -49,6 +49,7 @@ import pl.konradmaksymilian.turnbasedgames.gameroom.dto.message.PublishableUserE
 import pl.konradmaksymilian.turnbasedgames.gameroom.dto.message.RoomSettingsChangeMessage;
 import pl.konradmaksymilian.turnbasedgames.gameroom.repository.GameRoomManager;
 import pl.konradmaksymilian.turnbasedgames.gameroom.service.GameEngineFactory;
+import pl.konradmaksymilian.turnbasedgames.gameroom.service.GameEngineFactoryFacade;
 import pl.konradmaksymilian.turnbasedgames.gameroom.service.GameRoomService;
 import pl.konradmaksymilian.turnbasedgames.gameroom.service.GameRoomServiceImpl;
 import pl.konradmaksymilian.turnbasedgames.gameroom.service.RoomMessageSender;
@@ -73,12 +74,13 @@ public class GameRoomServiceTest {
 	private RoomMessageSender messageSender;
 	
 	@Mock
-	private GameEngineFactory engineFactory;
+	private GameEngineFactoryFacade engineFactoryFacade;
 	
 	@BeforeEach
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		roomService = new GameRoomServiceImpl(roomManager, userService, roomConverter, messageSender, engineFactory);
+		roomService = new GameRoomServiceImpl(roomManager, userService, roomConverter, messageSender,
+				engineFactoryFacade);
 	}
 	
 	@Test
@@ -104,7 +106,7 @@ public class GameRoomServiceTest {
 		var gameSettings = new DontGetAngryGameSettingsDto(40, 4, 1500);
 		var dto = new GameRoomCreateDto(false, RoomPrivacy.GUEST_FREE, ChatPolicy.CHAT_OFF, invitedUsers, gameSettings);
 		var mockEngine = GameEngineTestUtils.mockEngine();
-		when(engineFactory.create(gameSettings)).thenReturn(mockEngine);
+		when(engineFactoryFacade.create(gameSettings)).thenReturn(mockEngine);
 		var mockRoom = RoomTestUtils.mockRoom();
 		when(roomManager.save(any(GameRoom.class))).thenReturn(mockRoom);
 		when(roomManager.countByUserId(6)).thenReturn(2);
@@ -124,7 +126,7 @@ public class GameRoomServiceTest {
 		var gameSettings = new DontGetAngryGameSettingsDto(40, 4, 1500);
 		var dto = new GameRoomCreateDto(false, RoomPrivacy.GUEST_FREE, ChatPolicy.CHAT_OFF, null, gameSettings);
 		var mockEngine = GameEngineTestUtils.mockEngine();
-		when(engineFactory.create(gameSettings)).thenReturn(mockEngine);
+		when(engineFactoryFacade.create(gameSettings)).thenReturn(mockEngine);
 		var mockRoom = RoomTestUtils.mockRoom(5);
 		when(roomManager.save(any(GameRoom.class))).thenReturn(mockRoom);
 		when(roomManager.countByUserId(6)).thenReturn(1);
@@ -138,7 +140,7 @@ public class GameRoomServiceTest {
 		var gameSettings = new DontGetAngryGameSettingsDto(40, 4, 1500);
 		var dto = new GameRoomCreateDto(false, RoomPrivacy.GUEST_FREE, ChatPolicy.CHAT_OFF, null, gameSettings);
 		var mockEngine = GameEngineTestUtils.mockEngine();
-		when(engineFactory.create(gameSettings)).thenReturn(mockEngine);
+		when(engineFactoryFacade.create(gameSettings)).thenReturn(mockEngine);
 		var mockRoom = RoomTestUtils.mockRoom(5);
 		when(roomManager.save(any(GameRoom.class))).thenReturn(mockRoom);
 		when(roomManager.countByUserId(6)).thenReturn(3);
@@ -644,7 +646,7 @@ public class GameRoomServiceTest {
 		when(roomManager.find(12)).thenReturn(Optional.of(mockRoom));
 		var newSettings = new DontGetAngryGameSettingsDto(48, 4, 1000);
 		var mockEngine = GameEngineTestUtils.mockEngine();
-		when(engineFactory.create(newSettings)).thenReturn(mockEngine);
+		when(engineFactoryFacade.create(newSettings)).thenReturn(mockEngine);
 		
 		roomService.processMessage(12, new GameChangeMessage(newSettings));
 		
@@ -661,7 +663,7 @@ public class GameRoomServiceTest {
 		when(roomManager.find(12)).thenReturn(Optional.of(mockRoom));
 		var newSettings = new DontGetAngryGameSettingsDto(48, 4, 1000);
 		var mockEngine = GameEngineTestUtils.mockEngine();
-		when(engineFactory.create(newSettings)).thenReturn(mockEngine);
+		when(engineFactoryFacade.create(newSettings)).thenReturn(mockEngine);
 		
 		var message = roomService.processMessage(12, new GameChangeMessage(newSettings));
 		
@@ -697,7 +699,7 @@ public class GameRoomServiceTest {
 		when(roomManager.find(12)).thenReturn(Optional.of(mockRoom));
 		var newSettings = new DontGetAngryGameSettingsDto(48, 4, 1000);
 		var mockEngine = GameEngineTestUtils.mockEngine();
-		when(engineFactory.create(newSettings)).thenReturn(mockEngine);
+		when(engineFactoryFacade.create(newSettings)).thenReturn(mockEngine);
 		
 		assertThatExceptionOfType(BadOperationException.class)
 				.isThrownBy(() -> roomService.processMessage(12, new GameChangeMessage(newSettings)))
@@ -715,7 +717,7 @@ public class GameRoomServiceTest {
 		when(roomManager.find(12)).thenReturn(Optional.of(mockRoom));
 		var newSettings = new DontGetAngryGameSettingsDto(48, 4, 1000);
 		var mockEngine = GameEngineTestUtils.mockEngine();
-		when(engineFactory.create(newSettings)).thenReturn(mockEngine);
+		when(engineFactoryFacade.create(newSettings)).thenReturn(mockEngine);
 		
 		assertThatExceptionOfType(BadOperationException.class)
 				.isThrownBy(() -> roomService.processMessage(12, new GameChangeMessage(newSettings)))
@@ -754,7 +756,7 @@ public class GameRoomServiceTest {
 		when(roomManager.find(12)).thenReturn(Optional.of(mockRoom));
 		var newSettings = new DontGetAngryGameSettingsDto(48, 2, 1000);
 		var mockEngine = GameEngineTestUtils.mockEngine();
-		when(engineFactory.create(newSettings)).thenReturn(mockEngine);
+		when(engineFactoryFacade.create(newSettings)).thenReturn(mockEngine);
 		
 		roomService.processMessage(12, new GameChangeMessage(newSettings));
 		
@@ -783,7 +785,7 @@ public class GameRoomServiceTest {
 		var mockEngine = GameEngineTestUtils.mockEngine();
 		when(mockEngine.containsPlayer(126)).thenReturn(true);
 		when(mockEngine.containsPlayer(135)).thenReturn(true);
-		when(engineFactory.create(newSettings)).thenReturn(mockEngine);
+		when(engineFactoryFacade.create(newSettings)).thenReturn(mockEngine);
 		
 		roomService.processMessage(12, new GameChangeMessage(newSettings));
 		

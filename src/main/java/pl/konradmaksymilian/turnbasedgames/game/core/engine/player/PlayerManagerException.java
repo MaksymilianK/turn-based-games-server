@@ -1,4 +1,4 @@
-package pl.konradmaksymilian.turnbasedgames.game.core.engine;
+package pl.konradmaksymilian.turnbasedgames.game.core.engine.player;
 
 public class PlayerManagerException extends RuntimeException {
 

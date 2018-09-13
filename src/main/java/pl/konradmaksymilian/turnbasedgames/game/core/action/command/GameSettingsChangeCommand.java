@@ -4,8 +4,8 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import pl.konradmaksymilian.turnbasedgames.game.core.action.SharedGameActionName;
 import pl.konradmaksymilian.turnbasedgames.game.core.dto.GameSettingsDto;
-import pl.konradmaksymilian.turnbasedgames.game.core.dto.SharedGameAction;
 
 public final class GameSettingsChangeCommand extends HostGameCommand {
 	
@@ -22,6 +22,6 @@ public final class GameSettingsChangeCommand extends HostGameCommand {
 	
 	@Override
 	public int getCode() {
-		return SharedGameAction.GAME_SETTINGS_CHANGE.code();
+		return SharedGameActionName.GAME_SETTINGS_CHANGE.code();
 	}
 }

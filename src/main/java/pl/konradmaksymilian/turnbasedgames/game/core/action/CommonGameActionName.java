@@ -1,9 +1,9 @@
-package pl.konradmaksymilian.turnbasedgames.game.core.dto;
+package pl.konradmaksymilian.turnbasedgames.game.core.action;
 
 public enum CommonGameActionName {
 
 	DICE_ROLL,
-	MOVE,
+	TOKEN_MOVE,
 	BUILDING,
 	PASS;
 	

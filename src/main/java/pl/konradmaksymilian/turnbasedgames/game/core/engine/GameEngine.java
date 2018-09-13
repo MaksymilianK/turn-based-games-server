@@ -4,6 +4,7 @@ import java.util.Set;
 
 import pl.konradmaksymilian.turnbasedgames.game.Game;
 import pl.konradmaksymilian.turnbasedgames.game.core.action.command.GameCommand;
+import pl.konradmaksymilian.turnbasedgames.gameroom.GameRoom;
 
 public interface GameEngine {
 
@@ -14,6 +15,7 @@ public interface GameEngine {
 	int countPlayers();
 	boolean containsPlayer(int userId);
 	void removePlayer(int userId);
-	Set<Integer> getPlayersUsersIds();
 	void processCommand(GameCommand command);
+	void injectRoomId(int roomId);
+	Set<Integer> getPlayersUsersIds();
 }

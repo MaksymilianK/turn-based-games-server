@@ -13,7 +13,7 @@ import pl.konradmaksymilian.turnbasedgames.user.entity.User;
 
 public final class GameRoom {
 	
-	private int id;
+	private int id = -1;
 	private final Instant creationTime;
 	private final List<User> users = new ArrayList<>();
 	private final Set<Invitation> invitations = new HashSet<>();
@@ -38,7 +38,12 @@ public final class GameRoom {
 	}
 	
 	public void setId(int id) {
-		this.id = id;
+		if (id == -1) {
+			this.id = id;
+			gameEngine.injectRoomId(id);
+		} else {
+			throw new GameRoomException("The room's ID has been already set");
+		}
 	}
 	
 	public Instant getCreationTime() {

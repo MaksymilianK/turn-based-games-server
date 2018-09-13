@@ -1,10 +1,10 @@
 package pl.konradmaksymilian.turnbasedgames.game.core.engine;
 
-import pl.konradmaksymilian.turnbasedgames.game.core.engine.player.PlayerManager;
 import pl.konradmaksymilian.turnbasedgames.game.core.engine.player.SimplePlayer;
+import pl.konradmaksymilian.turnbasedgames.game.core.engine.player.StandardPlayerManager;
 import pl.konradmaksymilian.turnbasedgames.game.core.engine.timer.PlayerTimeLimitedGameTimer;
 
-public abstract class PlayerTimeLimitedGameEngine<T extends PlayerManager<? extends SimplePlayer>>
+public abstract class PlayerTimeLimitedGameEngine<T extends StandardPlayerManager<? extends SimplePlayer, ?>>
 		extends StandardGameEngine<PlayerTimeLimitedGameTimer, T> {
 
 	public PlayerTimeLimitedGameEngine(EventManager eventManager, PlayerTimeLimitedGameTimer timer, T playerManager) {
@@ -13,7 +13,7 @@ public abstract class PlayerTimeLimitedGameEngine<T extends PlayerManager<? exte
 	
 	@Override
 	protected void initialize() {
-		timer.setPlayersTimes(playerManager.getTeams());
+		timer.initialize(playerManager.getTeams());
 	}
 	
 	@Override

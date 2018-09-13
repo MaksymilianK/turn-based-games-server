@@ -5,7 +5,7 @@ import javax.validation.constraints.PositiveOrZero;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import pl.konradmaksymilian.turnbasedgames.game.core.dto.SharedGameAction;
+import pl.konradmaksymilian.turnbasedgames.game.core.action.SharedGameActionName;
 
 public final class PlayerTeamShiftCommand extends HostGameCommand {
 	
@@ -33,6 +33,6 @@ public final class PlayerTeamShiftCommand extends HostGameCommand {
 
 	@Override
 	public int getCode() {
-		return SharedGameAction.PLAYER_TEAM_SHIFT.code();
+		return SharedGameActionName.PLAYER_TEAM_SHIFT.code();
 	}
 }

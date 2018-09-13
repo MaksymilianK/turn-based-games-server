@@ -10,7 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
-import pl.konradmaksymilian.turnbasedgames.game.core.action.event.GameEvent;
+import pl.konradmaksymilian.turnbasedgames.game.core.dto.event.GameEventDto;
 import pl.konradmaksymilian.turnbasedgames.gameroom.dto.message.PublishableUserEscapeMessage;
 import pl.konradmaksymilian.turnbasedgames.gameroom.service.RoomMessageSender;
 
@@ -38,7 +38,7 @@ public class RoomMessageSenderTest {
 	
 	@Test
 	public void sendGameCommand_sendsCoomand() {
-		var event = Mockito.mock(GameEvent.class);
+		var event = Mockito.mock(GameEventDto.class);
 		messageSender.sendGameEvent(5, event);
 		
 		verify(messagingTemplate, times(1)).convertAndSend("/topic/game-rooms/5", event	);

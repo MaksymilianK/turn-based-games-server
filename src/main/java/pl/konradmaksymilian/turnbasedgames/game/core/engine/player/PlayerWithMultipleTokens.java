@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import pl.konradmaksymilian.turnbasedgames.game.core.board.IdentifiablePlayerToken;
+
 public class PlayerWithMultipleTokens<T extends IdentifiablePlayerToken> extends SimplePlayer {
 
 	private final Map<Integer, T> tokens = new HashMap<>();

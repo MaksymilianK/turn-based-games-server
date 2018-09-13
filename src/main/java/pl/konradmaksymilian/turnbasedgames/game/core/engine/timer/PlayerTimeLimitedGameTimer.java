@@ -43,7 +43,11 @@ public final class PlayerTimeLimitedGameTimer extends GameTimer {
 		return playersTimes.get(player);
 	}
 	
-	public void setPlayersTimes(Set<Integer> players) {
+	public void setPlayerTime(Duration playerTime) {
+		this.playerTime = playerTime;
+	}
+	
+	public void initialize(Set<Integer> players) {
 		players.forEach(player -> playersTimes.put(player, playerTime));
 	}
 	

@@ -1,7 +1,7 @@
 package pl.konradmaksymilian.turnbasedgames.game.core.engine.player;
 
+import pl.konradmaksymilian.turnbasedgames.game.core.board.IdentifiablePlayerToken;
 import pl.konradmaksymilian.turnbasedgames.game.core.engine.ChessTeam;
-import pl.konradmaksymilian.turnbasedgames.game.core.engine.PlayerManagerException;
 
 public abstract class ChessBasedPlayerManager<
 				T1 extends PlayerWithMultipleTokens<? extends IdentifiablePlayerToken>,
@@ -37,6 +37,11 @@ public abstract class ChessBasedPlayerManager<
 	@Override
 	public final int getMaxPlayers() {
 		return 2;
+	}
+	
+	@Override
+	public final void setMaxPlayers(int maxPlayers) {
+		throw new UnsupportedOperationException("Cannot change maxPlayers property in chess-based games");
 	}
 	
 	public T1 getPlayer(ChessTeam team) {

@@ -1,24 +1,24 @@
 package pl.konradmaksymilian.turnbasedgames.game.dontgetangry.action.event;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.Instant;
 
-import pl.konradmaksymilian.turnbasedgames.game.core.action.command.NotHostGameCommand;
-import pl.konradmaksymilian.turnbasedgames.game.core.action.event.GameEvent;
-import pl.konradmaksymilian.turnbasedgames.game.core.dto.CommonGameActionName;
+import pl.konradmaksymilian.turnbasedgames.game.core.action.CommonGameActionName;
+import pl.konradmaksymilian.turnbasedgames.game.core.action.event.MoveGameEvent;
 
-public final class DontGetAngryMoveEvent extends GameEvent {
+public final class DontGetAngryMoveEvent extends MoveGameEvent {
 
 	private final int token;
 	
-	public DontGetAngryMoveEvent(int token) {
+	public DontGetAngryMoveEvent(int team, int token) {
+		super(team);
 		this.token = token;
 	}
 	
 	/**
 	 * @param time the message sending time (millis from epoch)
 	 */
-	public DontGetAngryMoveEvent(long time, int token) {
-		super(time);
+	public DontGetAngryMoveEvent(Instant time, int team, int token) {
+		super(time, team);
 		this.token = token;
 	}
 	
@@ -28,6 +28,6 @@ public final class DontGetAngryMoveEvent extends GameEvent {
 	
 	@Override
 	public int getCode() {
-		return CommonGameActionName.MOVE.code();
+		return CommonGameActionName.TOKEN_MOVE.code();
 	}
 }

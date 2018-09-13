@@ -4,6 +4,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import pl.konradmaksymilian.turnbasedgames.game.core.action.event.GameEvent;
+import pl.konradmaksymilian.turnbasedgames.game.core.dto.event.GameEventDto;
 import pl.konradmaksymilian.turnbasedgames.gameroom.dto.message.PublishableRoomMessage;
 
 @Component
@@ -21,8 +22,8 @@ public class RoomMessageSender {
 		messagingTemplate.convertAndSend(getDestination(roomId), message);
 	}
 	
-	public void sendGameEvent(int roomId, GameEvent event) {
-		messagingTemplate.convertAndSend(getDestination(roomId), event);
+	public void sendGameEvent(int roomId, GameEventDto eventDto) {
+		messagingTemplate.convertAndSend(getDestination(roomId), eventDto);
 	}
 	
 	private String getDestination(int roomId) {

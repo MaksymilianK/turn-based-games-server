@@ -6,16 +6,17 @@ import pl.konradmaksymilian.turnbasedgames.game.core.action.GameAction;
 
 public abstract class GameEvent implements GameAction {
 
-	private final long time;
+	private final Instant time;
 	
 	public GameEvent() {
-		this(Instant.now().toEpochMilli());
+		this(Instant.now());
 	}
 	
-	/**
- 	* @param time the message sending time (millis from epoch)
- 	*/
-	public GameEvent(long time) {
+	public GameEvent(Instant time) {
 		this.time = time;
+	}
+
+	public Instant getTime() {
+		return time;
 	}
 }

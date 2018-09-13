@@ -11,6 +11,8 @@ public abstract class GameTimer {
 	
 	protected Instant currentExecutionStart;
 	
+	private Instant gameStart;
+	
 	private ScheduledFuture<?> currentExecution;
 		
 	private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
@@ -27,16 +29,7 @@ public abstract class GameTimer {
 		return currentExecutionStart;
 	}
 	
-	protected synchronized void schedule(Duration time, Runnable onTimeEnd) {
-		if (isRunning()) {
-			throw new GameTimerException("Cannot schedule a new action if the previous one is not finished");
-		}
-		
-		currentExecution = executor.schedule(onTimeEnd, time.toSeconds(), TimeUnit.SECONDS);
-		currentExecutionStart = getNow();
-	}
-	
-	protected synchronized boolean stop() {
+	public synchronized boolean stop() {
 		if (isRunning()) {
 			currentExecution.cancel(true);
 			return true;
@@ -44,8 +37,25 @@ public abstract class GameTimer {
 			return false;
 		}
 	}
-		
-	public static Instant getNow() {
+	
+	public Instant getNow() {
 		return Instant.now();
+	}
+	
+	public long getNowEpochMilli() {
+		return Instant.now().toEpochMilli();
+	}
+	
+	public Instant getGameStart() {
+		return gameStart;
+	}
+	
+	protected synchronized void schedule(Duration time, Runnable onTimeEnd) {
+		if (isRunning()) {
+			throw new GameTimerException("Cannot schedule a new action if the previous one is not finished");
+		}
+		
+		currentExecution = executor.schedule(onTimeEnd, time.toSeconds(), TimeUnit.SECONDS);
+		currentExecutionStart = getNow();
 	}
 }

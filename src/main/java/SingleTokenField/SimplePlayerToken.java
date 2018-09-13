@@ -1,4 +1,4 @@
-package pl.konradmaksymilian.turnbasedgames.game.core.engine.player;
+package SingleTokenField;
 
 public class SimplePlayerToken {
 

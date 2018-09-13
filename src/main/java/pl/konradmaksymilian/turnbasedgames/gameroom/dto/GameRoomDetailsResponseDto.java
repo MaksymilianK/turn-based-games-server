@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.List;
 
 import pl.konradmaksymilian.turnbasedgames.core.exception.BuilderNullPropertyException;
-import pl.konradmaksymilian.turnbasedgames.game.core.dto.GameResponseDto;
+import pl.konradmaksymilian.turnbasedgames.game.dto.GameResponseDto;
 import pl.konradmaksymilian.turnbasedgames.gameroom.ChatPolicy;
 import pl.konradmaksymilian.turnbasedgames.gameroom.RoomPrivacy;
 

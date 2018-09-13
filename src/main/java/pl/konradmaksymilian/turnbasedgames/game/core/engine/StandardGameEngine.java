@@ -1,24 +1,29 @@
 package pl.konradmaksymilian.turnbasedgames.game.core.engine;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import pl.konradmaksymilian.turnbasedgames.core.exception.BadOperationException;
+import pl.konradmaksymilian.turnbasedgames.game.core.action.SharedGameActionName;
 import pl.konradmaksymilian.turnbasedgames.game.core.action.command.GameCommand;
 import pl.konradmaksymilian.turnbasedgames.game.core.action.command.GameSettingsChangeCommand;
 import pl.konradmaksymilian.turnbasedgames.game.core.action.command.PlayerTeamChangeCommand;
 import pl.konradmaksymilian.turnbasedgames.game.core.action.command.PlayerTeamShiftCommand;
-import pl.konradmaksymilian.turnbasedgames.game.core.action.event.GameCountdownStartEvent;
 import pl.konradmaksymilian.turnbasedgames.game.core.action.event.GameEvent;
-import pl.konradmaksymilian.turnbasedgames.game.core.action.event.GameSettingsChangeEvent;
 import pl.konradmaksymilian.turnbasedgames.game.core.action.event.GameStartEvent;
-import pl.konradmaksymilian.turnbasedgames.game.core.action.event.PlayerTeamChangeEvent;
-import pl.konradmaksymilian.turnbasedgames.game.core.action.event.PlayerTeamShiftEvent;
-import pl.konradmaksymilian.turnbasedgames.game.core.dto.SharedGameAction;
-import pl.konradmaksymilian.turnbasedgames.game.core.engine.player.PlayerManager;
+import pl.konradmaksymilian.turnbasedgames.game.core.action.event.PlayerEscapeEvent;
+import pl.konradmaksymilian.turnbasedgames.game.core.dto.event.GameCountdownStartEventDto;
+import pl.konradmaksymilian.turnbasedgames.game.core.dto.event.GameSettingsChangeEventDto;
+import pl.konradmaksymilian.turnbasedgames.game.core.dto.event.GameStartEventDto;
+import pl.konradmaksymilian.turnbasedgames.game.core.dto.event.PlayerEscapeEventDto;
+import pl.konradmaksymilian.turnbasedgames.game.core.dto.event.PlayerTeamChangeEventDto;
+import pl.konradmaksymilian.turnbasedgames.game.core.dto.event.PlayerTeamShiftEventDto;
 import pl.konradmaksymilian.turnbasedgames.game.core.engine.player.SimplePlayer;
+import pl.konradmaksymilian.turnbasedgames.game.core.engine.player.StandardPlayerManager;
 import pl.konradmaksymilian.turnbasedgames.game.core.engine.timer.GameTimer;
 
-public abstract class StandardGameEngine<T1 extends GameTimer, T2 extends PlayerManager<? extends SimplePlayer>>
+public abstract class StandardGameEngine<T1 extends GameTimer, T2 extends StandardPlayerManager<? extends SimplePlayer, ?>>
 		implements GameEngine {
 
 	protected GameStatus status;
@@ -38,15 +43,15 @@ public abstract class StandardGameEngine<T1 extends GameTimer, T2 extends Player
 	@Override
 	public void processCommand(GameCommand command) {
 		int code = command.getCode();
-		GameEvent eventToPublish = null;
+		GameEvent event = null;
 				
-		if (code == SharedGameAction.GAME_COUNTDOWN_START.code()) {
+		if (code == SharedGameActionName.GAME_COUNTDOWN_START.code()) {
 			start();
-		} else if (code == SharedGameAction.GAME_SETTINGS_CHANGE.code()) {
+		} else if (code == SharedGameActionName.GAME_SETTINGS_CHANGE.code()) {
 			changeSettings((GameSettingsChangeCommand) command);
-		} else if (code == SharedGameAction.PLAYER_TEAM_CHANGE.code()) {
+		} else if (code == SharedGameActionName.PLAYER_TEAM_CHANGE.code()) {
 			changeTeam((PlayerTeamChangeCommand) command);
-		} else if (code == SharedGameAction.PLAYER_TEAM_SHIFT.code()) {
+		} else if (code == SharedGameActionName.PLAYER_TEAM_SHIFT.code()) {
 			shiftPlayerTeam((PlayerTeamShiftCommand) command);
 		} else {
 			if (status.equals(GameStatus.STARTED)) {
@@ -55,11 +60,11 @@ public abstract class StandardGameEngine<T1 extends GameTimer, T2 extends Player
 				throw new BadOperationException("Cannot send the command; it's not a turn of the current user");
 			}
 			
-			eventToPublish = processSpecificCommand(command);
+			event = processSpecificCommand(command);
 		}
 		
-		if (eventToPublish != null) {
-			eventManager.publishAndStore(eventToPublish);
+		if (event != null) {
+			eventManager.store(event);
 		}
 	}
 
@@ -82,7 +87,7 @@ public abstract class StandardGameEngine<T1 extends GameTimer, T2 extends Player
 		return playerManager.getMaxPlayers();
 	}
 	
-	public GameStartEvent start() {
+	public void start() {
 		throwExceptionIfStartedOrCountdown();
 		if (playerManager.countPlayers() < playerManager.getMinPlayers()) {
 			throw new BadOperationException("Cannot start a game when there is too few players");
@@ -91,39 +96,42 @@ public abstract class StandardGameEngine<T1 extends GameTimer, T2 extends Player
 		status = GameStatus.COUNTDOWN;
 		
 		timer.countdown(() -> {
-			eventManager.publishAndStore(new GameStartEvent());
+			var now = timer.getNow();
+			eventManager.store(new GameStartEvent(now));
+			eventManager.publish(new GameStartEventDto(now.toEpochMilli()));
 			status = GameStatus.STARTED;
 			onStart();
 		});
 		
-		eventManager.publish(new GameCountdownStartEvent());
+		eventManager.publish(new GameCountdownStartEventDto(timer.getNow().toEpochMilli()));
 		playerManager.start();
 		initialize();
-		return null;
 	}
 	
-	public GameSettingsChangeEvent changeSettings(GameSettingsChangeCommand command) {
+	public void changeSettings(GameSettingsChangeCommand command) {
 		if (!command.getNewSettings().getGame().equals(getGame())) {
 			throw new GameEngineException("Cannot change game settings; invalid new settings");
 		}
 		throwExceptionIfStartedOrCountdown();
 		
 		changeGameSettings(command);
-		return new GameSettingsChangeEvent(command.getNewSettings());
+		eventManager.publish(new GameSettingsChangeEventDto(timer.getNowEpochMilli(), command.getNewSettings()));
 	}
 	
-	private PlayerTeamChangeEvent changeTeam(PlayerTeamChangeCommand command) {
+	private void changeTeam(PlayerTeamChangeCommand command) {
 		throwExceptionIfStartedOrCountdown();
 		
 		playerManager.changeTeam(command.getSenderId(), command.getNewTeam());
-		return new PlayerTeamChangeEvent(command.getSenderId(), command.getNewTeam());
+		eventManager.publish(new PlayerTeamChangeEventDto(timer.getNowEpochMilli(), command.getSenderId(), 
+				command.getNewTeam()));
 	}
 	
-	private PlayerTeamShiftEvent shiftPlayerTeam(PlayerTeamShiftCommand command) {
+	private void shiftPlayerTeam(PlayerTeamShiftCommand command) {
 		throwExceptionIfStartedOrCountdown();
 		
 		playerManager.shiftTeams(command.getFirstTeam(), command.getSecondTeam());
-		return new PlayerTeamShiftEvent(command.getFirstTeam(), command.getSecondTeam());
+		eventManager.publish(new PlayerTeamShiftEventDto(timer.getNowEpochMilli(), command.getFirstTeam(), 
+				command.getSecondTeam()));
 	}
 	
 	@Override
@@ -138,30 +146,54 @@ public abstract class StandardGameEngine<T1 extends GameTimer, T2 extends Player
 
 	@Override
 	public void removePlayer(int userId) {
-		if (isNotStarted()) {
-			playerManager.removePlayerByUserId(userId);
-		} else {
-			cleanAfterPlayer(userId);
+		int team = playerManager.removePlayerByUserId(userId);
+		if (!isNotStarted()) {
+			cleanAfterPlayer(team);
+			var now = timer.getNow();
+			eventManager.store(new PlayerEscapeEvent(now, team));
+			eventManager.publish(new PlayerEscapeEventDto(now.toEpochMilli(), team));
 		}
 	}
-
+	
 	@Override
 	public Set<Integer> getPlayersUsersIds() {
-		return playerManager.getPlayersUsersIds();
+		var players = new HashSet<Integer>();
+		players.addAll(playerManager.getPlayers().values());
+		return Collections.unmodifiableSet(players);
+	}
+
+	public T2 getPlayerManager() {
+		return playerManager;
+	}
+	
+	public T1 getTimer() {
+		return timer;
 	}
 	
 	public boolean isNotStarted() {
 		return status.equals(GameStatus.NOT_STARTED);
 	}
 	
-	private void throwExceptionIfStartedOrCountdown() {
-		if (!isNotStarted()) {
-			throw new BadOperationException("Cannot process the command while a game is already started");
-		}
+	@Override
+	public void injectRoomId(int roomId) {
+		eventManager.injectRoomId(roomId);
 	}
 	
 	protected void cannotRecogniseCommand() {
 		throw new BadOperationException("The command unrecognised");
+	}
+	
+	protected void finish() {
+		status = GameStatus.NOT_STARTED;
+		timer.stop();
+		eventManager.publishGameHistory();
+		eventManager.reset();
+	}
+	
+	private void throwExceptionIfStartedOrCountdown() {
+		if (!isNotStarted()) {
+			throw new BadOperationException("Cannot process the command while a game is already started");
+		}
 	}
 		
 	protected abstract GameEvent processSpecificCommand(GameCommand command);

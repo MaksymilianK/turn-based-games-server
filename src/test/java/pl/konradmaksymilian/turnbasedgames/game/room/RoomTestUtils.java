@@ -10,8 +10,8 @@ import java.util.Set;
 
 import pl.konradmaksymilian.turnbasedgames.game.Game;
 import pl.konradmaksymilian.turnbasedgames.game.GameEngineTestUtils;
-import pl.konradmaksymilian.turnbasedgames.game.core.dto.GameResponseDto;
 import pl.konradmaksymilian.turnbasedgames.game.core.engine.GameStatus;
+import pl.konradmaksymilian.turnbasedgames.game.dto.GameResponseDto;
 import pl.konradmaksymilian.turnbasedgames.gameroom.ChatPolicy;
 import pl.konradmaksymilian.turnbasedgames.gameroom.GameRoom;
 import pl.konradmaksymilian.turnbasedgames.gameroom.Invitation;
@@ -57,7 +57,7 @@ public class RoomTestUtils {
 				.areObserversAllowed(true)
 				.chatPolicy(ChatPolicy.CHAT_ON)
 				.creationTime(Instant.now().toEpochMilli())
-				.gameDto(new GameResponseDto(players, GameStatus.NOT_STARTED, 0) {
+				.gameDto(new GameResponseDto(players, GameStatus.NOT_STARTED, null, 0) {
 					@Override
 					public Game getGame() {
 						return Game.DONT_GET_ANGRY;

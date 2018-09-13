@@ -1,6 +1,6 @@
 package pl.konradmaksymilian.turnbasedgames.game.core.action.command;
 
-import pl.konradmaksymilian.turnbasedgames.game.core.dto.CommonGameActionName;
+import pl.konradmaksymilian.turnbasedgames.game.core.action.CommonGameActionName;
 
 public final class SimpleDiceRollCommand extends NotHostGameCommand {
 

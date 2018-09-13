@@ -1,6 +1,8 @@
 package pl.konradmaksymilian.turnbasedgames.game.core.action.event;
 
-import pl.konradmaksymilian.turnbasedgames.game.core.dto.SharedGameAction;
+import java.time.Instant;
+
+import pl.konradmaksymilian.turnbasedgames.game.core.action.SharedGameActionName;
 
 public class PlayerTeamChangeEvent extends GameEvent {
 	
@@ -13,10 +15,7 @@ public class PlayerTeamChangeEvent extends GameEvent {
 		this.newTeam = newTeam;
 	}
 	
-	/**
-	 * @param time the message sending time (millis from epoch)
-	 */
-	public PlayerTeamChangeEvent(long time, int previousTeam, int newTeam) {
+	public PlayerTeamChangeEvent(Instant time, int previousTeam, int newTeam) {
 		super(time);
 		this.previousTeam = previousTeam;
 		this.newTeam = newTeam;
@@ -32,6 +31,6 @@ public class PlayerTeamChangeEvent extends GameEvent {
 
 	@Override
 	public int getCode() {
-		return SharedGameAction.GAME_START.code();
+		return SharedGameActionName.GAME_START.code();
 	}
 }

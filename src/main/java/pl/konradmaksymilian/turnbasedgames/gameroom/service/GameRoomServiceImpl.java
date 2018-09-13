@@ -52,15 +52,16 @@ public class GameRoomServiceImpl implements GameRoomService {
 	private UserService userService;
 	private GameRoomToDtoConverter roomConverter;
 	private RoomMessageSender messageSender;
-	private GameEngineFactory engineFactory;
+	private GameEngineFactoryFacade engineFactoryFacade;
 	
 	public GameRoomServiceImpl(GameRoomManager roomManager, UserService userService, 
-			GameRoomToDtoConverter roomConverter, RoomMessageSender messageSender, GameEngineFactory engineFactory) {
+			GameRoomToDtoConverter roomConverter, RoomMessageSender messageSender, 
+			GameEngineFactoryFacade engineFactoryFacade) {
 		this.roomManager = roomManager;
 		this.userService = userService;
 		this.roomConverter = roomConverter;
 		this.messageSender = messageSender;
-		this.engineFactory = engineFactory;
+		this.engineFactoryFacade = engineFactoryFacade;
 	}
 	
 	@Override
@@ -81,7 +82,7 @@ public class GameRoomServiceImpl implements GameRoomService {
 		throwExceptionIfUserInMoreThan2Rooms(current.getId());
 		
 		var room = roomManager.save((new GameRoom.Builder())
-				.gameEngine(engineFactory.create(roomDto.getGameSettings()))
+				.gameEngine(engineFactoryFacade.create(roomDto.getGameSettings()))
 				.chatPolicy(roomDto.getChatPolicy())
 				.invitations(roomDto.getInvitedUsers().stream()
 						.map(userId -> new Invitation(current.getId(), userId, now))
@@ -254,7 +255,9 @@ public class GameRoomServiceImpl implements GameRoomService {
 				throw new BadOperationException("Cannot change a game; the same game is already set");
 			}
 		
-			room.setGameEngine(engineFactory.create(message.getNewSettings()));
+	    	var engine = engineFactoryFacade.create(message.getNewSettings());
+			room.setGameEngine(engine);
+			engine.injectRoomId(room.getId());
 			
 			if (!room.areObserversAllowed()) {
 	    		addAllUsersToGame(room);

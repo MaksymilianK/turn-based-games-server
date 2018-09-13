@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import pl.konradmaksymilian.turnbasedgames.core.converter.EntityToDtoConverter;
-import pl.konradmaksymilian.turnbasedgames.game.core.dto.GameResponseDtoFactory;
+import pl.konradmaksymilian.turnbasedgames.game.dto.GameResponseDtoFactory;
 import pl.konradmaksymilian.turnbasedgames.gameroom.GameRoom;
 import pl.konradmaksymilian.turnbasedgames.gameroom.dto.GameRoomDetailsResponseDto;
 import pl.konradmaksymilian.turnbasedgames.gameroom.dto.GameRoomResponseDto;

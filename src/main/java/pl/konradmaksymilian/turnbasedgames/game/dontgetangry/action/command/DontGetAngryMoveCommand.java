@@ -2,8 +2,8 @@ package pl.konradmaksymilian.turnbasedgames.game.dontgetangry.action.command;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import pl.konradmaksymilian.turnbasedgames.game.core.action.CommonGameActionName;
 import pl.konradmaksymilian.turnbasedgames.game.core.action.command.NotHostGameCommand;
-import pl.konradmaksymilian.turnbasedgames.game.core.dto.CommonGameActionName;
 
 public final class DontGetAngryMoveCommand extends NotHostGameCommand {
 
@@ -19,6 +19,6 @@ public final class DontGetAngryMoveCommand extends NotHostGameCommand {
 	
 	@Override
 	public int getCode() {
-		return CommonGameActionName.MOVE.code();
+		return CommonGameActionName.TOKEN_MOVE.code();
 	}
 }
