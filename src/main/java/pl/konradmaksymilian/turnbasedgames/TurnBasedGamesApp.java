@@ -8,10 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TurnBasedGamesApp {
 	
-	private static final Logger logger = LoggerFactory.getLogger(TurnBasedGamesApp.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TurnBasedGamesApp.class);
 	
 	public static void main(String[] args) {
-		logger.info("Starting turn based games server!");
+		LOGGER.info("Starting turn based games server!");
 		SpringApplication.run(TurnBasedGamesApp.class);
 	}
 }

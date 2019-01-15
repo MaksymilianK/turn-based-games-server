@@ -12,6 +12,6 @@ public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
         		.simpMessageDestMatchers("app/topic/game-rooms/*", "app/topic/game-rooms").authenticated()
         		.simpSubscribeDestMatchers("user/queue/game-rooms/*", "user/queue/game-rooms/*/game").authenticated()
         		.simpSubscribeDestMatchers("user/queue/errors*").authenticated()
-        		.anyMessage().denyAll();
+        		.anyMessage().permitAll();
     }
 }

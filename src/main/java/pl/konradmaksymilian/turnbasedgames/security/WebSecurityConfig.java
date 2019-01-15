@@ -55,8 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 				.authorizeRequests()
-						.regexMatchers(HttpMethod.GET, "/users").hasRole("PLAYER")
-						.antMatchers(HttpMethod.POST, "/security-tokens", "/users").permitAll()
+						/*.regexMatchers(HttpMethod.GET, "/users").hasRole("PLAYER")
 						.antMatchers(HttpMethod.GET, "/users/administration", "/users/current", "/users/stats", 
 								"/game-rooms/stats").permitAll()
 						.antMatchers(HttpMethod.PATCH, "/users/{\\d+}").permitAll()
@@ -64,7 +63,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						.antMatchers(HttpMethod.POST, "/game-rooms").hasRole("PLAYER")
 						.antMatchers(HttpMethod.PUT, "/users/{\\d+}/role").hasRole("ADMINISTRATOR")
 						.antMatchers(HttpMethod.DELETE, "users/{\\d+}").hasRole("HEAD_ADMINISTRATOR")
-						.anyRequest().denyAll()
+						.antMatchers(HttpMethod.POST,"/security-tokens", "/users").permitAll()*/
+						.anyRequest().permitAll()
 						.and()
 				.formLogin()
 						.permitAll()
@@ -82,6 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						.maximumSessions(1)
 						.sessionRegistry(sessionRegistry)
 						.and().and()
+				.cors().and()
 				.csrf().disable()
 				.requestCache().disable();
 	}
